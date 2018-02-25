@@ -15211,7 +15211,7 @@ IYRQZWKQHkIIIYQQQpWJQXoIIYQQQghVJgbpIYQQQgghVJn/BwzA7MlpHjk/AAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#####################################################################</span>
@@ -17040,7 +17040,69 @@ IUJXEARBEARBEARBWFX8f58dVTppHpdoAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Question 1:</strong> Use the plot above to analyze the performance of each of the attempted architectures.  Which performs best?  Provide an explanation regarding why you think some models perform better than others.</p>
-<p><strong>Answer:</strong> The attempted architectures are model_4 that have the loweest validational loss. But model_4 slitly overfits to train data because validational loss is higher than train loss.</p>
+<p><strong>Answer:</strong> The attempted architectures are model_4 that have the loweest validational loss. But model_4 slitly overfits to train data because validational loss is higher than train loss. Indivisual model details are below.</p>
+<table>
+<thead><tr>
+<th style="text-align:center">Model Name</th>
+<th style="text-align:center">Total Parameters</th>
+<th style="text-align:center">Average time per epoch [s]</th>
+<th style="text-align:center">Training loss at last epoch</th>
+<th style="text-align:center">Validational Loss at last epoch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">model_0</td>
+<td style="text-align:center">3741</td>
+<td style="text-align:center">262.15</td>
+<td style="text-align:center">753.6888</td>
+<td style="text-align:center">733.0993</td>
+</tr>
+<tr>
+<td style="text-align:center">model_1</td>
+<td style="text-align:center">135029</td>
+<td style="text-align:center">260.10</td>
+<td style="text-align:center">111.5667</td>
+<td style="text-align:center">127.0756</td>
+</tr>
+<tr>
+<td style="text-align:center">model_2</td>
+<td style="text-align:center">51449</td>
+<td style="text-align:center">159.70</td>
+<td style="text-align:center">145.6363</td>
+<td style="text-align:center">146.8231</td>
+</tr>
+<tr>
+<td style="text-align:center">model_3</td>
+<td style="text-align:center">376481</td>
+<td style="text-align:center">407.90</td>
+<td style="text-align:center">101.2771</td>
+<td style="text-align:center">121.5080</td>
+</tr>
+<tr>
+<td style="text-align:center">model_4</td>
+<td style="text-align:center">268429</td>
+<td style="text-align:center">387.95</td>
+<td style="text-align:center">97.5341</td>
+<td style="text-align:center">118.4050</td>
+</tr>
+<tr>
+<td style="text-align:center">model_5</td>
+<td style="text-align:center">381249</td>
+<td style="text-align:center">411.25</td>
+<td style="text-align:center">105.4912</td>
+<td style="text-align:center">119.5825</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>model_0: Number of parameters is small. So training loss and validational loss are both high.</li>
+<li>model_1: Added time distributed dense layer to model_0, number of parameters is larger. Training loss and validational loss become low. </li>
+<li>model_2: Added 1D convolutional layer to model_1, number of parameters is smaller. So average time per epoch is shorter but Training loss and validational loss become slitly high.</li>
+<li>model_3: Added more rnn layer to model_1, number of parameters is larger than model_1. Average time per epoch is longer but Trainign loss and validational loss become slitly low.</li>
+<li>model_4: Number of parameters of bidirectional layer is smaller than model_3 because number of connections between rnn layers is small. Average time per epoch becomes slitly short, and training loss and validational loss are slitly low.</li>
+<li>model_5: Added 1D convolutinal layer to model_3, Training loss and validational loss become slitly low. But number of parameters and average of time per epoch become slitly large.</li>
+</ul>
 
 </div>
 </div>
@@ -17073,12 +17135,12 @@ IUJXEARBEARBEARBWFX8f58dVTppHpdoAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># specify the model</span>
 <span class="n">model_end</span> <span class="o">=</span> <span class="n">final_model</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="c1"># change to 13 if you would like to use MFCC features</span>
-                        <span class="n">dropout</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                        <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                         <span class="n">units</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 </pre></div>
 
@@ -17101,11 +17163,11 @@ Layer (type)                 Output Shape              Param #
 =================================================================
 the_input (InputLayer)       (None, None, 13)          0         
 _________________________________________________________________
-bidirectional_1 (Bidirection (None, None, 400)         256800    
+bidirectional_2 (Bidirection (None, None, 400)         256800    
 _________________________________________________________________
 bn_rnn (BatchNormalization)  (None, None, 400)         1600      
 _________________________________________________________________
-time_distributed_1 (TimeDist (None, None, 29)          11629     
+time_distributed_2 (TimeDist (None, None, 29)          11629     
 _________________________________________________________________
 softmax (Activation)         (None, None, 29)          0         
 =================================================================
@@ -17133,7 +17195,7 @@ None
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_model</span><span class="p">(</span><span class="n">input_to_softmax</span><span class="o">=</span><span class="n">model_end</span><span class="p">,</span> 
@@ -17158,85 +17220,85 @@ None
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Epoch 1/40
-106/106 [==============================] - 400s - loss: 287.8714 - val_loss: 237.3494
+106/106 [==============================] - 389s - loss: 290.7682 - val_loss: 329.5489
 Epoch 2/40
-106/106 [==============================] - 398s - loss: 234.6089 - val_loss: 217.9326
+106/106 [==============================] - 391s - loss: 236.9354 - val_loss: 440.6040
 Epoch 3/40
-106/106 [==============================] - 399s - loss: 216.8403 - val_loss: 208.9070
+106/106 [==============================] - 390s - loss: 221.4776 - val_loss: 219.7541
 Epoch 4/40
-106/106 [==============================] - 397s - loss: 211.1583 - val_loss: 242.1501
+106/106 [==============================] - 393s - loss: 215.9274 - val_loss: 270.1070
 Epoch 5/40
-106/106 [==============================] - 398s - loss: 204.5918 - val_loss: 283.1038
+106/106 [==============================] - 393s - loss: 211.5505 - val_loss: 357.1533
 Epoch 6/40
-106/106 [==============================] - 394s - loss: 201.2340 - val_loss: 209.4871
+106/106 [==============================] - 394s - loss: 194.5524 - val_loss: 217.5399
 Epoch 7/40
-106/106 [==============================] - 399s - loss: 206.0849 - val_loss: 209.2694
+106/106 [==============================] - 394s - loss: 186.0433 - val_loss: 206.4359
 Epoch 8/40
-106/106 [==============================] - 401s - loss: 204.1588 - val_loss: 186.0276
+106/106 [==============================] - 394s - loss: 178.4323 - val_loss: 179.7751
 Epoch 9/40
-106/106 [==============================] - 398s - loss: 194.3373 - val_loss: 200.6878
+106/106 [==============================] - 392s - loss: 171.8256 - val_loss: 169.1613
 Epoch 10/40
-106/106 [==============================] - 398s - loss: 186.1735 - val_loss: 188.5565
+106/106 [==============================] - 394s - loss: 166.1535 - val_loss: 160.4609
 Epoch 11/40
-106/106 [==============================] - 402s - loss: 180.2591 - val_loss: 168.6709
+106/106 [==============================] - 391s - loss: 161.3343 - val_loss: 154.8594
 Epoch 12/40
-106/106 [==============================] - 401s - loss: 175.3250 - val_loss: 165.3413
+106/106 [==============================] - 391s - loss: 157.7755 - val_loss: 157.1728
 Epoch 13/40
-106/106 [==============================] - 399s - loss: 170.6735 - val_loss: 158.8805
+106/106 [==============================] - 390s - loss: 153.3551 - val_loss: 148.8967
 Epoch 14/40
-106/106 [==============================] - 401s - loss: 166.9361 - val_loss: 155.2238
+106/106 [==============================] - 391s - loss: 150.5773 - val_loss: 148.0958
 Epoch 15/40
-106/106 [==============================] - 399s - loss: 164.0947 - val_loss: 148.3393
+106/106 [==============================] - 392s - loss: 148.1900 - val_loss: 141.6283
 Epoch 16/40
-106/106 [==============================] - 401s - loss: 161.0447 - val_loss: 147.1855
+106/106 [==============================] - 392s - loss: 145.4142 - val_loss: 139.4050
 Epoch 17/40
-106/106 [==============================] - 401s - loss: 158.4885 - val_loss: 144.1585
+106/106 [==============================] - 392s - loss: 142.0733 - val_loss: 141.7750
 Epoch 18/40
-106/106 [==============================] - 399s - loss: 156.3291 - val_loss: 142.0729
+106/106 [==============================] - 392s - loss: 141.3166 - val_loss: 137.3838
 Epoch 19/40
-106/106 [==============================] - 398s - loss: 154.6858 - val_loss: 141.2253
+106/106 [==============================] - 392s - loss: 139.2777 - val_loss: 135.5566
 Epoch 20/40
-106/106 [==============================] - 400s - loss: 153.2416 - val_loss: 140.3343
+106/106 [==============================] - 391s - loss: 137.5645 - val_loss: 133.8781
 Epoch 21/40
-106/106 [==============================] - 399s - loss: 150.4419 - val_loss: 139.6261
+106/106 [==============================] - 392s - loss: 134.9929 - val_loss: 131.7025
 Epoch 22/40
-106/106 [==============================] - 400s - loss: 150.2543 - val_loss: 149.3313
+106/106 [==============================] - 391s - loss: 134.4711 - val_loss: 131.7280
 Epoch 23/40
-106/106 [==============================] - 400s - loss: 150.3079 - val_loss: 138.5525
+106/106 [==============================] - 390s - loss: 133.9537 - val_loss: 128.3816
 Epoch 24/40
-106/106 [==============================] - 400s - loss: 148.5243 - val_loss: 134.5832
+106/106 [==============================] - 396s - loss: 135.5745 - val_loss: 131.4934
 Epoch 25/40
-106/106 [==============================] - 400s - loss: 146.0027 - val_loss: 134.8992
+106/106 [==============================] - 392s - loss: 132.7857 - val_loss: 129.4369
 Epoch 26/40
-106/106 [==============================] - 399s - loss: 144.5270 - val_loss: 132.5249
+106/106 [==============================] - 392s - loss: 130.9186 - val_loss: 129.2724
 Epoch 27/40
-106/106 [==============================] - 400s - loss: 142.4528 - val_loss: 135.7228
+106/106 [==============================] - 392s - loss: 129.7740 - val_loss: 129.4360
 Epoch 28/40
-106/106 [==============================] - 401s - loss: 141.4729 - val_loss: 130.4921
+106/106 [==============================] - 391s - loss: 128.2509 - val_loss: 125.8383
 Epoch 29/40
-106/106 [==============================] - 399s - loss: 141.1345 - val_loss: 129.9792
+106/106 [==============================] - 391s - loss: 127.6962 - val_loss: 129.7524
 Epoch 30/40
-106/106 [==============================] - 398s - loss: 139.9779 - val_loss: 127.6590
+106/106 [==============================] - 396s - loss: 126.7322 - val_loss: 125.1589
 Epoch 31/40
-106/106 [==============================] - 402s - loss: 138.2424 - val_loss: 128.7111
+106/106 [==============================] - 394s - loss: 126.2269 - val_loss: 124.1886
 Epoch 32/40
-106/106 [==============================] - 397s - loss: 137.2387 - val_loss: 126.5144
+106/106 [==============================] - 392s - loss: 125.2511 - val_loss: 123.4270
 Epoch 33/40
-106/106 [==============================] - 402s - loss: 136.1388 - val_loss: 126.0965
+106/106 [==============================] - 391s - loss: 123.9777 - val_loss: 124.9798
 Epoch 34/40
-106/106 [==============================] - 400s - loss: 135.1907 - val_loss: 126.7498
+106/106 [==============================] - 394s - loss: 123.6168 - val_loss: 124.4145
 Epoch 35/40
-106/106 [==============================] - 398s - loss: 134.3717 - val_loss: 126.6598
+106/106 [==============================] - 398s - loss: 123.4446 - val_loss: 120.5291
 Epoch 36/40
-106/106 [==============================] - 397s - loss: 134.0981 - val_loss: 123.7646
+106/106 [==============================] - 398s - loss: 122.1268 - val_loss: 122.1981
 Epoch 37/40
-106/106 [==============================] - 399s - loss: 132.5722 - val_loss: 124.2149
+106/106 [==============================] - 392s - loss: 121.5657 - val_loss: 123.3672
 Epoch 38/40
-106/106 [==============================] - 396s - loss: 131.7975 - val_loss: 125.7618
+106/106 [==============================] - 389s - loss: 120.0766 - val_loss: 118.7661
 Epoch 39/40
-106/106 [==============================] - 399s - loss: 131.0555 - val_loss: 122.9970
+106/106 [==============================] - 392s - loss: 120.4687 - val_loss: 121.0868
 Epoch 40/40
-106/106 [==============================] - 401s - loss: 129.7821 - val_loss: 124.0881
+106/106 [==============================] - 390s - loss: 119.5074 - val_loss: 120.5615
 </pre>
 </div>
 </div>
@@ -17251,6 +17313,11 @@ Epoch 40/40
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Question 2:</strong> Describe your final model architecture and your reasoning at each step.</p>
 <p><strong>Answer:</strong> Batch normalization is added between the bidirectional rnn layer and the timedistributed dense layer so that training become much smoother. Dropout is low rate because batch normalization also prevents model from overfitting.</p>
+<ul>
+<li>Total parameters is 270029 and this parameters is enough because bidirectional rnn of model_4 achieves at the lowest validational loss of all models.</li>
+<li>Dropout of units in bidirectional rnn layer is setted to 0.1 because model_4 looks slitly overfitting.</li>
+<li>Batch normalization is added before timedistributed dense layer to be smooth training and also preventing from overfitting.</li>
+</ul>
 
 </div>
 </div>
@@ -17267,7 +17334,7 @@ Epoch 40/40
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -17333,7 +17400,7 @@ Epoch 40/40
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_end_no_dropout</span> <span class="o">=</span> <span class="n">final_model</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
@@ -17381,7 +17448,7 @@ None
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_predictions</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mi">63</span><span class="p">,</span> 
@@ -17411,7 +17478,7 @@ i&#39;m glad she&#39;s held her own since
 --------------------------------------------------------------------------------
 Predicted transcription:
 
-an lathes hodirown sens
+im gla shes hal ronsins
 --------------------------------------------------------------------------------
 </pre>
 </div>
@@ -17432,7 +17499,7 @@ an lathes hodirown sens
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_predictions</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mi">63</span><span class="p">,</span> 
@@ -17462,7 +17529,7 @@ his conduct and presence of mind in this emergence appeared conspicuous
 --------------------------------------------------------------------------------
 Predicted transcription:
 
-his cinndatk en presisoft lin inise erginss tat peat cospekois
+his condotinprasins o miin i mes sen morgins po pet tispe yoes
 --------------------------------------------------------------------------------
 </pre>
 </div>
